@@ -28,12 +28,12 @@ public class javascriptexecutortests {
     }
 
    @Test
-    public void test_scroll() throws InterruptedException {
-        driver.get("https://www.tutorialspoint.com/index.htm");
-        WebElement element = driver.findElement(By.xpath("//*[text()='ABOUT US']"));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",element);
-        Thread.sleep(3000);
-        driver.close();
+   public void test_scroll() throws InterruptedException {
+       driver.get("https://www.tutorialspoint.com/index.htm");
+       WebElement element = driver.findElement(By.xpath("//*[text()='About us']"));
+       ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",element);
+       Thread.sleep(3000);
+       driver.close();
     }
 
     @Test

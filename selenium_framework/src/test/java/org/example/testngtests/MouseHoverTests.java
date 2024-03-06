@@ -17,10 +17,7 @@ public class MouseHoverTests {
 
     @BeforeTest
     public void beforetest() {
-        WebDriverManager.chromedriver().clearDriverCache().setup();
-      //  String rootpath =System.getProperty("user.dir");
-
-      //  System.setProperty("webdriver.chrome.driver", rootpath+"src/test/resources/driver/chromedriver");
+        WebDriverManager.chromedriver().setup();
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--remote-allow-origins=*");
         ops.addArguments("--start-maximized");
@@ -33,6 +30,7 @@ public class MouseHoverTests {
         driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
 
     }
+
     @Test
     public void hover_test() throws InterruptedException {
         driver.get("https://www.spicejet.com/");
@@ -61,4 +59,70 @@ public class MouseHoverTests {
 
     }
 
+    @Test
+    public void open_in_new_link_test() {
+        try {
+            driver.get("https://www.tutorialspoint.com/about/about_careers.htm");
+            String term = Keys.chord(Keys.CONTROL, Keys.ENTER);
+            driver.findElement(By.xpath("//a[text()='Terms of Use']")).sendKeys(term);
+
+            Thread.sleep(1000);
+
+
+            List<String> tabs = new ArrayList<>(driver.getWindowHandles());
+            driver.switchTo().window(tabs.get(1));
+
+            String title = driver.getTitle();
+
+            if (title.equals("Terms of Use")) {
+                Assert.assertTrue(true);
+            } else {
+                Assert.fail("Landed in wrong tab");
+            }
+
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@id='search-strings']")));
+
+            driver.findElement(By.xpath("//input[@id='search-strings']")).sendKeys("hhgj");
+        } catch (InterruptedException e) {
+            System.out.println("");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        finally {
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void test_new_window() {
+        driver.get("https://demoqa.com/browser-windows");
+        String currentwindowid = driver.getWindowHandle();
+        driver.findElement(By.xpath("//button[@id='windowButton']")).click();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.numberOfWindowsToBe(2));
+
+        for (String allwindow : driver.getWindowHandles()) {
+            if (!currentwindowid.contentEquals(allwindow)) {
+                driver.switchTo().window(allwindow);
+                break;
+            }
+        }
+
+        String urlofnewwindow = driver.getCurrentUrl();
+        if (urlofnewwindow.contains("https://demoqa.com/sample")) {
+            Assert.assertTrue(true);
+        } else {
+            Assert.fail("URL of child window is different");
+        }
+
+    }
+
+
+    @AfterTest
+    public void aftertest() {
+
+        driver.quit();
+    }
 }

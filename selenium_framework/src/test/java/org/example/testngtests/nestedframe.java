@@ -20,7 +20,7 @@ public class nestedframe {
        // WebDriverManager.chromedriver().clearDriverCache().setup();
         String rootpath =System.getProperty("user.dir");
 
-        System.setProperty("webdriver.chrome.driver", rootpath+"src/test/resources/driver/chromedriver");
+        System.setProperty("webdriver.chrome.driver", rootpath+"/Users/prabinlama/Desktop/IT SUtra/selenium_framework/selenium_java_batch_jan24/selenium_framework/chromedriver");
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--remote-allow-origins=*");
         ops.addArguments("--start-maximized");
